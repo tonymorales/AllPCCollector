@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DomainUsersRepository extends JpaRepository<DomainUser, Integer>{
 
-
+    public DomainUser findDomainUserByUsername(String username);
 }
