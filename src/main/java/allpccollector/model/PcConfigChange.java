@@ -13,7 +13,7 @@ public class PcConfigChange {
     @GeneratedValue
     Long id;
 
-    Computer computer;
+   // Computer computer;
     String paramName;
     String from;
     String to;

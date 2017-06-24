@@ -1,11 +1,20 @@
 package allpccollector.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+//import javax.persistence.CascadeType;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.ManyToOne;
+@Entity
 public class PcInfoRequest {
 
+    @Id
+    @GeneratedValue
+    private int id;
+
+    private String datetime;
     private String name;
     private String ipAddress;
     private String macaddress;
@@ -15,12 +24,13 @@ public class PcInfoRequest {
     private String cpuId;
     private String ram;
     private String gpu;
-    private String logonTime;
-//    private String motherBoard;
+    //private String logonTime;
 
+    public PcInfoRequest() {
+    }
 
-
-    public PcInfoRequest(String name, String ipAddress, String macaddress, String username, String osVersion, String cpu, String cpuId, String ram, String gpu, String logonTime) {
+    public PcInfoRequest(String datetime, String name, String ipAddress, String macaddress, String username, String osVersion, String cpu, String cpuId, String ram, String gpu) {
+        this.datetime = datetime;
         this.name = name;
         this.ipAddress = ipAddress;
         this.macaddress = macaddress;
@@ -30,7 +40,15 @@ public class PcInfoRequest {
         this.cpuId = cpuId;
         this.ram = ram;
         this.gpu = gpu;
-        this.logonTime = logonTime;
+        //this.logonTime = logonTime;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String dateTime) {
+        this.datetime = dateTime;
     }
 
     public String getName() {
@@ -105,12 +123,29 @@ public class PcInfoRequest {
         this.gpu = gpu;
     }
 
-    public String getLogonTime() {
-        return logonTime;
+    @Override
+    public String toString() {
+        return "PcInfoRequest{" +
+                "id=" + id +
+                ", dateTime='" + datetime + '\'' +
+                ", name='" + name + '\'' +
+                ", ipAddress='" + ipAddress + '\'' +
+                ", macaddress='" + macaddress + '\'' +
+                ", username='" + username + '\'' +
+                ", osVersion='" + osVersion + '\'' +
+                ", cpu='" + cpu + '\'' +
+                ", cpuId='" + cpuId + '\'' +
+                ", ram='" + ram + '\'' +
+                ", gpu='" + gpu + '\'' +
+                '}';
     }
 
-    public void setLogonTime(String logonTime) {
-        this.logonTime = logonTime;
-    }
+    //    public String getLogonTime() {
+//        return logonTime;
+//    }
+//
+//    public void setLogonTime(String logonTime) {
+//        this.logonTime = logonTime;
+//    }
 }
 

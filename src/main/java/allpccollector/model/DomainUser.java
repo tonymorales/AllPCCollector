@@ -1,6 +1,9 @@
 package allpccollector.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.List;
 //import javax.persistence.OneToMany;
 
 @Entity
@@ -8,10 +11,14 @@ public class DomainUser {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @Column(name = "username", unique = true)
     private String username;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private List<LoginEvent> loginEvents;
 
     public DomainUser() { //JPA only
     }
@@ -20,11 +27,11 @@ public class DomainUser {
         this.username = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

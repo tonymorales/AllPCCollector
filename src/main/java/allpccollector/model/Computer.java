@@ -5,6 +5,7 @@ package allpccollector.model;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -22,9 +23,13 @@ public class Computer {
 
     //private int domainUserid;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "username")
-    private DomainUser username;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "username")
+//    private DomainUser username;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private List<LoginEvent> loginEvents;
 
     private String osVersion;
     private String cpu;
@@ -38,19 +43,18 @@ public class Computer {
     public Computer() { //for JPA only
     }
 
-//    public Computer(String name, String ipAddress, String macaddress, String username, String osVersion, String cpu, String cpuId, String ram, String gpu/*, String date, String motherBoard*/) {
-//        this.name = name;
-//        this.ipAddress = ipAddress;
-//        this.macaddress = macaddress;
-//        this.username = username;
-//        this.osVersion = osVersion;
-//        this.cpu = cpu;
-//        this.cpuId = cpuId;
-//        this.ram = ram;
-//        this.gpu = gpu;
+    public Computer(String name, String ipAddress, String macaddress, String osVersion, String cpu, String cpuId, String ram, String gpu/*, String date, String motherBoard*/) {
+        this.name = name;
+        this.ipAddress = ipAddress;
+        this.macaddress = macaddress;
+        this.osVersion = osVersion;
+        this.cpu = cpu;
+        this.cpuId = cpuId;
+        this.ram = ram;
+        this.gpu = gpu;
 //        this.date = date;
 //        this.motherBoard = motherBoard;
-//    }
+    }
 
     public long getId() {
         return id;
@@ -84,14 +88,14 @@ public class Computer {
         this.macaddress = macaddress;
     }
 
-    public DomainUser getUsername() {
-        return username;
-    }
-
-    public void setUsername(DomainUser username) {
-
-        this.username = username;
-    }
+//    public DomainUser getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(DomainUser username) {
+//
+//        this.username = username;
+//    }
 
     public String getOsVersion() {
         return osVersion;
