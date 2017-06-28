@@ -14,7 +14,7 @@ public class Computer {
 
     @Id
     @GeneratedValue
-
+    @Column(name = "computer_id")
     private long id;
 
     private String name;
@@ -28,7 +28,7 @@ public class Computer {
 //    private DomainUser username;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "login_event_id")
     private List<LoginEvent> loginEvents;
 
     private String osVersion;

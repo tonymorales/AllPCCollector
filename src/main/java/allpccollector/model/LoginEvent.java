@@ -9,15 +9,15 @@ public class LoginEvent {
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "login_event_id")
     Long id;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     DomainUser user;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @ManyToOne
+    @JoinColumn(name = "computer_id")
     Computer computer;
 
 

@@ -11,13 +11,14 @@ public class DomainUser {
 
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "username", unique = true)
     private String username;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "login_event_id")
     private List<LoginEvent> loginEvents;
 
     public DomainUser() { //JPA only
