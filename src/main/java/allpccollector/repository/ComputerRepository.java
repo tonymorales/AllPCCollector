@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ComputerRepository extends JpaRepository<Computer, Long>{
 
-    Computer findComputerByName(String name);
-    Computer findComputerByCpuId(String cpuId);
+    Computer findComputerByComputerName(String name);
+   // Computer findComputerByName(String name);
+    //Computer findComputerByCpuId(String cpuId);
 }

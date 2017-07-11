@@ -29,7 +29,7 @@ public class ComputerController {
 
     @RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
     public Computer findComputerByName(@PathVariable("name") String name){
-        return computerRepo.findComputerByName(name);
+        return computerRepo.findComputerByComputerName(name);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
