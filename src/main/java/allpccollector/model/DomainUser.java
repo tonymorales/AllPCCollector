@@ -1,6 +1,11 @@
 package allpccollector.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 //import javax.persistence.OneToMany;
 
 @Entity
@@ -8,10 +13,15 @@ public class DomainUser {
 
     @Id
     @GeneratedValue
-    private int id;
+    @Column(name = "user_id")
+    private Long id;
 
     @Column(name = "username", unique = true)
     private String username;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "computer", cascade = CascadeType.ALL)
+    private Set<LoginEvent> loginEvents;
 
     public DomainUser() { //JPA only
     }
@@ -20,11 +30,11 @@ public class DomainUser {
         this.username = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

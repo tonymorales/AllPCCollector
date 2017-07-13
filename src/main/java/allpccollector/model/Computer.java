@@ -2,111 +2,65 @@ package allpccollector.model;
 
 
 
-import org.hibernate.annotations.Cascade;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 
 @Entity
 @Table(name = "computers")
-public class Computer {
+public class Computer implements Serializable{
 
     @Id
     @GeneratedValue
+    @Column(name = "computer_id")
+    private long computerId;
 
-    private long id;
+    @Column(name = "computer_name")
+    private String computerName;
 
-    private String name;
-    private String ipAddress;
-    private String macaddress;
+    @Column(name = "sku")
+    private String sku;
 
-    //private int domainUserid;
+    @Column(name = "cpuid", nullable = false)
+    @NaturalId
+    private String cpuId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "username")
-    private DomainUser username;
+    @OneToMany(mappedBy = "computer", cascade = CascadeType.ALL)
+    private Set<ComputerProperty> computerProperties;
 
-    private String osVersion;
-    private String cpu;
-
-    private String cpuId; //This is motherboard id
-    private String ram;
-    private String gpu;
-//    private String date;
-//    private String motherBoard;
+    @JsonIgnore
+    @OneToMany(mappedBy = "computer", cascade = CascadeType.ALL)
+    private Set<LoginEvent> loginEvents;
 
     public Computer() { //for JPA only
     }
 
-//    public Computer(String name, String ipAddress, String macaddress, String username, String osVersion, String cpu, String cpuId, String ram, String gpu/*, String date, String motherBoard*/) {
-//        this.name = name;
-//        this.ipAddress = ipAddress;
-//        this.macaddress = macaddress;
-//        this.username = username;
-//        this.osVersion = osVersion;
-//        this.cpu = cpu;
-//        this.cpuId = cpuId;
-//        this.ram = ram;
-//        this.gpu = gpu;
-//        this.date = date;
-//        this.motherBoard = motherBoard;
-//    }
-
-    public long getId() {
-        return id;
+    public long getComputerId() {
+        return computerId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setComputerId(long computerId) {
+        this.computerId = computerId;
     }
 
-    public String getName() {
-        return name;
+    public String getComputerName() {
+        return computerName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setComputerName(String computerName) {
+        this.computerName = computerName;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
+    public String getSku() {
+        return sku;
     }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public String getMacaddress() {
-        return macaddress;
-    }
-
-    public void setMacaddress(String macaddress) {
-        this.macaddress = macaddress;
-    }
-
-    public DomainUser getUsername() {
-        return username;
-    }
-
-    public void setUsername(DomainUser username) {
-
-        this.username = username;
-    }
-
-    public String getOsVersion() {
-        return osVersion;
-    }
-
-    public void setOsVersion(String osVersion) {
-        this.osVersion = osVersion;
-    }
-
-    public String getCpu() {
-        return cpu;
-    }
-
-    public void setCpu(String cpu) {
-        this.cpu = cpu;
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getCpuId() {
@@ -117,35 +71,11 @@ public class Computer {
         this.cpuId = cpuId;
     }
 
-    public String getRam() {
-        return ram;
+    public Set<ComputerProperty> getComputerProperties() {
+        return computerProperties;
     }
 
-    public void setRam(String ram) {
-        this.ram = ram;
+    public void setComputerProperties(Set<ComputerProperty> computerProperties) {
+        this.computerProperties = computerProperties;
     }
-
-    public String getGpu() {
-        return gpu;
-    }
-
-    public void setGpu(String gpu) {
-        this.gpu = gpu;
-    }
-
-//    public String getDate() {
-//        return date;
-//    }
-//
-//    public void setDate(String date) {
-//        this.date = date;
-//    }
-
-//    public String getMotherBoard() {
-//        return motherBoard;
-//    }
-//
-//    public void setMotherBoard(String motherBoard) {
-//        this.motherBoard = motherBoard;
-//    }
 }
