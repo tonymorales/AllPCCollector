@@ -7,5 +7,6 @@ public interface ComputerRepository extends JpaRepository<Computer, Long>{
 
     Computer findComputerByComputerName(String name);
    // Computer findComputerByName(String name);
-    //Computer findComputerByCpuId(String cpuId);
+    Computer findComputerByCpuId(String cpuId);
+
 }

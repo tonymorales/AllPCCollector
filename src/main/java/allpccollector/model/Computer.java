@@ -2,6 +2,7 @@ package allpccollector.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -29,13 +30,11 @@ public class Computer implements Serializable{
     private String cpuId;
 
     @OneToMany(mappedBy = "computer", cascade = CascadeType.ALL)
-    private Set<ComputerParam> computerParams;
+    private Set<ComputerProperty> computerProperties;
 
-    //private int computersIdUindex;
-
-    //private int computersCpuIDUindex;
-
-    //private int computersSkuUindex;
+    @JsonIgnore
+    @OneToMany(mappedBy = "computer", cascade = CascadeType.ALL)
+    private Set<LoginEvent> loginEvents;
 
     public Computer() { //for JPA only
     }
@@ -72,11 +71,11 @@ public class Computer implements Serializable{
         this.cpuId = cpuId;
     }
 
-    public Set<ComputerParam> getComputerParams() {
-        return computerParams;
+    public Set<ComputerProperty> getComputerProperties() {
+        return computerProperties;
     }
 
-    public void setComputerParams(Set<ComputerParam> computerParams) {
-        this.computerParams = computerParams;
+    public void setComputerProperties(Set<ComputerProperty> computerProperties) {
+        this.computerProperties = computerProperties;
     }
 }

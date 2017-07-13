@@ -1,9 +1,11 @@
 package allpccollector.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 //import javax.persistence.OneToMany;
 
 @Entity
@@ -17,9 +19,9 @@ public class DomainUser {
     @Column(name = "username", unique = true)
     private String username;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "login_event_id")
-    private List<LoginEvent> loginEvents;
+    @JsonIgnore
+    @OneToMany(mappedBy = "computer", cascade = CascadeType.ALL)
+    private Set<LoginEvent> loginEvents;
 
     public DomainUser() { //JPA only
     }
