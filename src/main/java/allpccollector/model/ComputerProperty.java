@@ -24,8 +24,8 @@ public class ComputerProperty implements Serializable{
     @JoinColumn(name = "computer_id", nullable = false)
     private Computer computer;
 
-    //@ManyToOne(cascade = CascadeType.ALL)
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.ALL)
+    //@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "propertytype_id", nullable = false)
     private PropertyType type;
 
@@ -73,4 +73,15 @@ public class ComputerProperty implements Serializable{
         this.type = propertyType;
     }
 
+
+    @Override
+    public int hashCode() {
+        int cc = 17;
+        int result = 37;
+
+        result = cc * result + value.hashCode();
+        result = cc * result + type.getName().hashCode();
+
+        return result;
+    }
 }

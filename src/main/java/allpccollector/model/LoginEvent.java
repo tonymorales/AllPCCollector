@@ -1,7 +1,6 @@
 package allpccollector.model;
 
 import javax.persistence.*;
-import java.util.Calendar;
 
 @Entity
 @Table(name = "login_events")
@@ -12,21 +11,21 @@ public class LoginEvent {
     @Column(name = "login_event_id")
     Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     DomainUser user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "computer_id")
     Computer computer;
 
+    @Column(name = "datetime")
+    String datetime;
 
-    String time;
-
-    public LoginEvent(DomainUser user, Computer computer, String time) {
+    public LoginEvent(DomainUser user, Computer computer, String datetime) {
         this.user = user;
         this.computer = computer;
-        this.time = time;
+        this.datetime = datetime;
     }
 
 
@@ -54,11 +53,11 @@ public class LoginEvent {
         this.computer = computer;
     }
 
-    public String getTime() {
-        return time;
+    public String getDatetime() {
+        return datetime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 }

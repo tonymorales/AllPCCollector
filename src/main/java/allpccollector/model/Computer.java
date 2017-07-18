@@ -16,8 +16,8 @@ public class Computer implements Serializable{
 
     @Id
     @GeneratedValue
-    @Column(name = "computer_id")
-    private long computerId;
+    @Column(name = "id")
+    private long id;
 
     @Column(name = "computer_name")
     private String computerName;
@@ -39,12 +39,12 @@ public class Computer implements Serializable{
     public Computer() { //for JPA only
     }
 
-    public long getComputerId() {
-        return computerId;
+    public long getId() {
+        return id;
     }
 
-    public void setComputerId(long computerId) {
-        this.computerId = computerId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getComputerName() {

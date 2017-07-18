@@ -20,7 +20,7 @@ public class DomainUser {
     private String username;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "computer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<LoginEvent> loginEvents;
 
     public DomainUser() { //JPA only

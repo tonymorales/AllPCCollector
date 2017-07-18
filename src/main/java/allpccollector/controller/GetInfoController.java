@@ -1,10 +1,9 @@
 package allpccollector.controller;
 
+import allpccollector.model.Computer;
+import allpccollector.model.DomainUser;
 import allpccollector.model.LoginEvent;
-import allpccollector.repository.ComputerRepository;
-import allpccollector.repository.DomainUsersRepository;
-import allpccollector.repository.LoginEventRepository;
-import allpccollector.repository.PcConfigChangeRepository;
+import allpccollector.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,40 +26,90 @@ public class GetInfoController {
     LoginEventRepository loginEventRepo;
 
     @Autowired
-    PcConfigChangeRepository pcConfigChangeRepo;
+    ComputerParamRepository computerParamRepo;
+//
+//    @Autowired
+//    PcConfigChangeRepository pcConfigChangeRepo;
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void getComputerInfo(@Valid @RequestBody LoginEvent loginEvent){
 
+        //DomainUser user = loginEvent.getUser();
 
-        loginEventRepo.save(loginEvent);
-//        String username = requestBody.getUsername();
-//       //domainUsersRepo.save(new DomainUser(requestBody.getUsername()));
-//
-//        // String logonTime = requestBody.getDateTime();
-//
-//        DomainUser domainUser = domainUsersRepo.findDomainUserByUsername(username);
-//        if(domainUser == null ) {
-//            domainUser = new DomainUser(username);
-//            domainUsersRepo.save(domainUser);
-//        }
-//
-//
-//        Computer computer = computerRepo.findComputerByCpuId(requestBody.getCpuId());
-//        if(computer == null) computerRepo.save(new Computer(requestBody.getName(), requestBody.getIpAddress(), requestBody.getMacaddress(), requestBody.getOsVersion(), requestBody.getCpu(), requestBody.getCpuId(), requestBody.getRam(), requestBody.getGpu()));
-//
-//        String time = requestBody.getDatetime();
-//        //time = "12321312";
-//        LoginEvent loginEvent = loginEventRepo.save(new LoginEvent(domainUser, computer, time));
-//        // Computer(String name, String ipAddress, String macaddress, String osVersion, String cpu, String cpuId, String ram, String gpu/)
-//        /* Создаем компьютер из реквеста, вызываем компьютер из репозитория
-//        * Нужно переписать метод equals, а лучше сделать свой метод сравнения, который будет возвращать
-//        * List<PcConfigChange>  по этому списку мы будем делать запись в таблицу.
-//        * Если записей с таким id мы не найдем, то просто записываем новый компьютр в базу.*/
-//
-//        //loginEventRepo.save(new LoginEvent(domainUser, logonTime, computer));
+//        DomainUser existUser = domainUsersRepo.findDomainUserByUsername(loginEvent.getUser().getUsername());
+//        if(existUser == null) existUser = domainUsersRepo.save(loginEvent.getUser());
+
+        DomainUser existUser = domainUsersRepo.findDomainUserByUsername(loginEvent.getUser().getUsername());
+        if(existUser == null) {
+            DomainUser user = new DomainUser();
+            user.setUsername(loginEvent.getUser().getUsername());
+            existUser = user;
+            domainUsersRepo.save(existUser);
+        }
+
+        Computer computer = loginEvent.getComputer();
+        Computer existComputer = computerRepo.findComputerByCpuId(computer.getCpuId());
+        if(existComputer != null){
+            if(computer.getComputerName() != existComputer.getComputerName()) existComputer.setComputerName(computer.getComputerName());
+            //sku дергаем из Computername
+        }else{
+            existComputer = new Computer();
+            existComputer.setSku("");
+            existComputer.setComputerName(computer.getComputerName());
+            existComputer.setCpuId(computer.getCpuId());
+        }
+
+        computerRepo.saveAndFlush(existComputer);
+
+//        Computer existComputer = computerRepo.findComputerByCpuId(computer.getCpuId());
+//        System.out.println(existComputer != null);
 
 
+
+
+
+        /*if(existComputer == null) {
+            Computer comp = new Computer();
+            comp.setSku("");
+            comp.setCpuId(computer.getCpuId());
+            comp.setComputerName(computer.getComputerName());
+
+            existComputer = computer;
+            computerRepo.save(existComputer);
+        }
+        else{
+            computerRepo.save(existComputer);
+
+            HashSet<ComputerProperty> incomingSet = new HashSet<>();
+            incomingSet.addAll(computer.getComputerProperties());
+
+            HashSet<ComputerProperty> existSet = new HashSet<>();
+            existSet.addAll(existComputer.getComputerProperties());
+
+            incomingSet.removeAll(existSet);
+
+            for (ComputerProperty prop: incomingSet) {
+                for (ComputerProperty exprop : existSet){
+                    if(prop.getParamType().getName() == exprop.getParamType().getName()){
+                        //заносим данные в таблицу изменений, которой пока нет), пока просто сохраняем новую запись
+                        exprop.setValue(prop.getValue());
+                        exprop.setComputer(computer);
+                        computerParamRepo.save(exprop);
+                    }
+                }
+
+            }
+        }*/
+
+
+
+
+
+
+       loginEventRepo.save(new LoginEvent(existUser, existComputer, loginEvent.getDatetime()));
+
+      //  loginEventRepo.save(loginEvent);
 
     }
+
 }
