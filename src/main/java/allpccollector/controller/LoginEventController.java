@@ -17,7 +17,7 @@ public class LoginEventController {
     private ComputerRepository computerRepo;
 
     @Autowired
-    private ComputerParamRepository computerParamRepo;
+    private ComputerPropertyRepository computerParamRepo;
 
     @Autowired
     private PropertyTypeRepository paramTypeRepo;

@@ -28,7 +28,7 @@ public class GetInfoController {
     LoginEventRepository loginEventRepo;
 
     @Autowired
-    ComputerParamRepository computerParamRepo;
+    ComputerPropertyRepository computerPropertyRepo;
 
     @Autowired
     PropertyTypeRepository propertyTypeRepo;
@@ -72,15 +72,15 @@ public class GetInfoController {
 
                    streamSupplier.get().filter(p->p.hasSameTypeAs(newProperty) && !p.equals(newProperty))
                     .peek(p -> p.setOld(true))
-                    .forEach( p -> computerParamRepo.saveAndFlush(p));
+                    .forEach( p -> computerPropertyRepo.saveAndFlush(p));
 
                     return streamSupplier.get().noneMatch(p-> p.equals(newProperty)) || existSet.isEmpty();
         }).forEach(newProperty -> {
             newProperty.setComputer(finalExistComputer);
             newProperty.setDatetime(loginEvent.getDatetime());
-            PropertyType pt = propertyTypeRepo.findByName(newProperty.getParamType().getName());
-            if(pt!=null) newProperty.setParamType(pt);
-            computerParamRepo.saveAndFlush(newProperty);
+            PropertyType pt = propertyTypeRepo.findByName(newProperty.getPropertyType().getName());
+            if(pt!=null) newProperty.setPropertyType(pt);
+            computerPropertyRepo.saveAndFlush(newProperty);
         });
 
        loginEventRepo.save(new LoginEvent(existUser, existComputer, loginEvent.getDatetime()));

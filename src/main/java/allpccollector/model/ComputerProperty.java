@@ -41,12 +41,10 @@ public class ComputerProperty implements Serializable{
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
-   // @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "computer_id", nullable = false)
     private Computer computer;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    //@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "propertytype_id", nullable = false)
     private PropertyType type;
 
@@ -70,14 +68,6 @@ public class ComputerProperty implements Serializable{
     public void setValue(String value) {
         this.value = value;
     }
-//
-//    public String getComputerParamsTitle() {
-//        return computerParamsTitle;
-//    }
-//
-//    public void setComputerParamsTitle(String computerParamsTitle) {
-//        this.computerParamsTitle = computerParamsTitle;
-//    }
 
     public Computer getComputer() {
         return computer;
@@ -87,11 +77,11 @@ public class ComputerProperty implements Serializable{
         this.computer = computer;
     }
 
-    public PropertyType getParamType() {
+    public PropertyType getPropertyType() {
         return type;
     }
 
-    public void setParamType(PropertyType propertyType) {
+    public void setPropertyType(PropertyType propertyType) {
         this.type = propertyType;
     }
 
@@ -108,7 +98,7 @@ public class ComputerProperty implements Serializable{
     }
 
     public boolean hasSameTypeAs(ComputerProperty computerProperty){
-        return this.getParamType().getName().equals(computerProperty.getParamType().getName());
+        return this.getPropertyType().getName().equals(computerProperty.getPropertyType().getName());
     }
 
     public boolean equals(ComputerProperty obj) {
