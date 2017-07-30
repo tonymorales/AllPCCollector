@@ -17,6 +17,27 @@ public class ComputerProperty implements Serializable{
     @Column(name = "computer_property_value")
     private String value;
 
+    @Column(name = "datetime")
+    private String datetime;
+
+    @Column(name = "is_old")
+    private boolean isOld;
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
+    public boolean isOld() {
+        return isOld;
+    }
+
+    public void setOld(boolean old) {
+        isOld = old;
+    }
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
@@ -31,6 +52,7 @@ public class ComputerProperty implements Serializable{
 
 
     public ComputerProperty() {
+        setOld(false);
     }
 
     public Long getComputerPropertyId() {
@@ -83,5 +105,13 @@ public class ComputerProperty implements Serializable{
         result = cc * result + type.getName().hashCode();
 
         return result;
+    }
+
+    public boolean hasSameTypeAs(ComputerProperty computerProperty){
+        return this.getParamType().getName().equals(computerProperty.getParamType().getName());
+    }
+
+    public boolean equals(ComputerProperty obj) {
+        return this.hashCode() == obj.hashCode();
     }
 }

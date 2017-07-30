@@ -1,9 +1,6 @@
 package allpccollector.controller;
 
-import allpccollector.model.Computer;
-import allpccollector.model.ComputerProperty;
-import allpccollector.model.DomainUser;
-import allpccollector.model.LoginEvent;
+import allpccollector.model.*;
 import allpccollector.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/sendInfo")
@@ -31,9 +29,10 @@ public class GetInfoController {
 
     @Autowired
     ComputerParamRepository computerParamRepo;
-//
-//    @Autowired
-//    PcConfigChangeRepository pcConfigChangeRepo;
+
+    @Autowired
+    PropertyTypeRepository propertyTypeRepo;
+
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void getComputerInfo(@Valid @RequestBody LoginEvent loginEvent){
@@ -51,7 +50,7 @@ public class GetInfoController {
         Computer existComputer = computerRepo.findComputerByCpuId(computer.getCpuId());
         if(existComputer != null){
             if(!computer.getComputerName().equals(existComputer.getComputerName())) existComputer.setComputerName(computer.getComputerName());
-            //sku дергаем из Computername, нужно добавить потом
+            //Todo: Add SKU definition from computer name, or something else.
         }else{
             existComputer = new Computer();
             existComputer.setSku("");
@@ -61,32 +60,32 @@ public class GetInfoController {
 
         computerRepo.saveAndFlush(existComputer);
 
+        Set<ComputerProperty> existSet = new HashSet<>();
+        Set<ComputerProperty> set = existComputer.getComputerProperties();
+        if(set != null)existSet.addAll(existComputer.getComputerProperties());
 
-        //Properties from Request computer
         Set<ComputerProperty> incomingSet = computer.getComputerProperties();
-        //Properties from exist computer
-        Set<ComputerProperty> existSet = existComputer.getComputerProperties();
 
-        if(existSet == null) existSet = Collections.emptySet();
+        Computer finalExistComputer = existComputer;
+        incomingSet.stream().filter(newProperty -> {
+            Supplier<Stream<ComputerProperty>> streamSupplier =  () -> existSet.stream().filter(p -> !p.isOld());
 
-        for (ComputerProperty prop : incomingSet) {
-            for (ComputerProperty exprop : existSet) {
-                String propName = prop.getParamType().getName();
-                if (propName.equals(exprop.getParamType().getName())) {
-                        //заносим данные в таблицу изменений, которой пока нет), пока просто сохраняем новую запись
-                        exprop.setValue(prop.getValue());
-                        exprop.setComputer(existComputer);
-                        prop = exprop;
-                        break;
-                    }
-                }
-                prop.setComputer(existComputer);
-                computerParamRepo.saveAndFlush(prop);
-            }
+                   streamSupplier.get().filter(p->p.hasSameTypeAs(newProperty) && !p.equals(newProperty))
+                    .peek(p -> p.setOld(true))
+                    .forEach( p -> computerParamRepo.saveAndFlush(p));
+
+                    return streamSupplier.get().noneMatch(p-> p.equals(newProperty)) || existSet.isEmpty();
+        }).forEach(newProperty -> {
+            newProperty.setComputer(finalExistComputer);
+            newProperty.setDatetime(loginEvent.getDatetime());
+            PropertyType pt = propertyTypeRepo.findByName(newProperty.getParamType().getName());
+            if(pt!=null) newProperty.setParamType(pt);
+            computerParamRepo.saveAndFlush(newProperty);
+        });
 
        loginEventRepo.save(new LoginEvent(existUser, existComputer, loginEvent.getDatetime()));
 
-      //  loginEventRepo.save(loginEvent);
+
 
     }
 

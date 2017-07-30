@@ -19,9 +19,6 @@ public class PropertyType {
     @Column(name = "title")
     private String title;
 
-//    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
-//    private Set<ComputerParam> computerParam;
-
     public PropertyType() {
     }
 
@@ -49,11 +46,5 @@ public class PropertyType {
         this.title = title;
     }
 
-//    public Set<ComputerParam> getComputerParam() {
-//        return computerParam;
-//    }
-//
-//    public void setComputerParam(Set<ComputerParam> computerParams) {
-//        this.computerParam = computerParam;
-//    }
+
 }

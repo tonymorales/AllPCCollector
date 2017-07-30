@@ -30,6 +30,7 @@ public class Computer implements Serializable{
     @NaturalId
     private String cpuId;
 
+
     @OneToMany(mappedBy = "computer", cascade = CascadeType.ALL)
     private Set<ComputerProperty> computerProperties;
 
