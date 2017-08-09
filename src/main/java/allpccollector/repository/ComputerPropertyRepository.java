@@ -7,5 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ComputerPropertyRepository extends JpaRepository<ComputerProperty, Long> {
 
-
 }

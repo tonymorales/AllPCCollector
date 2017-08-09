@@ -13,17 +13,6 @@ import java.util.List;
 @RequestMapping("/logins")
 public class LoginEventController {
 
-    @Autowired
-    private ComputerRepository computerRepo;
-
-    @Autowired
-    private ComputerPropertyRepository computerParamRepo;
-
-    @Autowired
-    private PropertyTypeRepository paramTypeRepo;
-
-    @Autowired
-    private DomainUsersRepository domainUsersRepo;
 
     @Autowired
     LoginEventRepository loginEventRepo;

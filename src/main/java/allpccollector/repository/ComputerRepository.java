@@ -11,5 +11,4 @@ public interface ComputerRepository extends JpaRepository<Computer, Long>{
 
     Computer findComputerByCpuId(String cpuId);
 
-
 }
