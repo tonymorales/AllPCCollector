@@ -1,12 +1,10 @@
 package allpccollector.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
+
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
-//import javax.persistence.OneToMany;
 
 @Entity
 public class DomainUser {
