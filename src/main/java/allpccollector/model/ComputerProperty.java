@@ -91,7 +91,7 @@ public class ComputerProperty implements Serializable{
         int cc = 17;
         int result = 37;
 
-        result = cc * result + value.hashCode();
+        result += cc * result + value.hashCode();
         result = cc * result + type.getName().hashCode();
 
         return result;

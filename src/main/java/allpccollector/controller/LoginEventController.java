@@ -19,8 +19,6 @@ public class LoginEventController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<LoginEvent> findAll(){
-
-
         return loginEventRepo.findAll();
     }
 }

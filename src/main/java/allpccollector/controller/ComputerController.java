@@ -22,7 +22,7 @@ public class ComputerController {
 
     }
 
-    @RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public Computer findComputerByName(@PathVariable("name") String name){
         return computerRepo.findComputerByComputerName(name);
     }
